@@ -1,0 +1,64 @@
+import datetime
+import time
+from gpiozero import PWMOutputDevice
+import RPi.GPIO as GPIO
+from flask import Flask,render_template,request
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
+
+GPIO.setup(13, GPIO.OUT)
+GPIO.setup(19, GPIO.OUT)
+a = PWMOutputDevice(13)
+b = PWMOutputDevice(19)
+"""p = GPIO.PWM(13, 50)
+q = GPIO.PWM(19, 50)
+"""
+
+TRIG=29
+ECHO=31
+
+GPIO.setup(TRIG,GPIO.OUT)
+GPIO.setup(ECHO,GPIO.IN)
+GPIO.setup(IRL,GPIO.IN)
+GPIO.setup(IRR,GPIO.IN)
+
+def ultrasonic():
+    GPIO.output(TRIG,False)
+    time.sleep(0.0002)
+    GPIO.output(TRIG,True)
+    time.sleep(0.00001)
+    GPIO.output(TRIG,False)
+    while GPIO.input(ECHO)==0:
+        pulse_start=time.time()
+    while GPIO.input(ECHO)==1:
+        pulse_end=time.time()
+    pulse_duration=pulse_end-pulse_start
+    distance=pulse_duration*17150
+    distance=int(round(distance,2))
+    if distance>400:
+        distance=400	
+    return distance
+"""
+distance = ultrasonic()
+w1_fin = 10.140420
+w1_fin_x2 = 0.3374202680872
+w2_fin = 14.012266
+w2_fin_x2 = 0.4662550869303
+p.start(7.5)
+q.start(7.5)
+
+
+while True:
+    if(distance<40):
+        RS = w1_fin * (distance*30)
+        LS = w2_fin *(distance) 
+    else:
+        LS = w1_fin * distance
+        RS = w2_fin *distance
+     
+    p.ChangeDutyCycle(LS)
+    q.ChangeDutyCycle(RS)
+"""
+a.value(0.5)
+b.value(0)vv
